@@ -1,0 +1,343 @@
+{
+  "title": "ABCD(i)ario",
+  "subtitle": "Repertorio de palabras y términos apropiados para expresar \"Fantásticas Visiones\"",
+  "nomenclature": {
+    "Adj.": "Adjetivo",
+    "Sin.": "Sinónimo",
+    "Ant.": "Antónimo",
+    "Ref.": "Referencia",
+    "Ej.": "Ejemplo",
+    "Ing.": "Inglés"
+  },
+  "entries": [
+    {
+      "term": "Abstracto",
+      "letter": "A",
+      "type": "Adj.",
+      "definition": "Alguna cualidad con exclusión del sujeto. En la modernidad la abstracción era el fin último, en la época contemporánea, la abstracción debe de responder a un compendio de elementos o conclusiones mostrando la información substancial.",
+      "antonym": "Concreto",
+      "english": "Abstract"
+    },
+    {
+      "term": "Abstracción",
+      "letter": "A",
+      "definition": "Separar conceptualmente al sujeto del objeto. Mostrar de manera condensada y precisa la esencia de los objetos.",
+      "english": "Abstraction"
+    },
+    {
+      "term": "Adaptar",
+      "letter": "A",
+      "definition": "Modificar un elemento a una condición nueva o con características diferentes para las que dicho elemento fue creado o diseñado.",
+      "synonym": "Ajustar, adecuar",
+      "example": "Adaptarse a las condiciones del entorno",
+      "english": "Adapt"
+    },
+    {
+      "term": "Autónomo, autónoma",
+      "letter": "A",
+      "type": "Adj.",
+      "definition": "Alguien que trabaja por iniciativa propia. En cualquier ámbito alguien o algo que realiza sus propias reglas, tareas y resultados, llevando a cabo su labor de manera organizada e independiente.",
+      "english": "Autonomous"
+    },
+    {
+      "term": "Auto organización",
+      "letter": "A",
+      "definition": "Proceso o capacidad en el que un sistema organiza sus componentes de una manera intencional sin la ayuda de factores externos.",
+      "english": "Self-organization"
+    },
+    {
+      "term": "Calidad",
+      "letter": "C",
+      "definition": "Propiedades de ciertos objetos que permiten apreciarlos y determinar su valor, así como su cercanía o lejanía a los estándares requeridos o establecidos.",
+      "english": "Quality"
+    },
+    {
+      "term": "Caos",
+      "letter": "C",
+      "definition": "Desorden o confusión. Estado no definido. Mediante la aplicación de herramientas avanzadas de cálculo (computacionales) se han podido establecer bases para el estudio de efectos indeterminados dentro de cualquier sistema. Caos en la posmodernidad es indeterminado, dinámico, irregular.",
+      "antonym": "Orden",
+      "english": "Chaos"
+    },
+    {
+      "term": "Collage",
+      "letter": "C",
+      "definition": "Técnica de representación que consiste en la composición a través de una serie de elementos, objetos, materiales de diversa naturaleza o procedencia. Referencias, imágenes, texturas super impuestas o mezcladas con la finalidad de representar una idea o concepto.",
+      "reference": "Archigram, Superstudio",
+      "english": "Collage"
+    },
+    {
+      "term": "Complejo",
+      "letter": "C",
+      "type": "Adj.",
+      "definition": "Compuesto o conformado de diversos elementos. Propuesta que se dispone de visiones variadas, con el fin de establecer una nueva realidad o resultado, coherente y comprensible.",
+      "example": "Encontrar unidad y orden en un diseño complejo",
+      "english": "Complex"
+    },
+    {
+      "term": "Cualidad",
+      "letter": "C",
+      "definition": "Elemento o rasgo distintivo de algo. Elemento diferenciador y distintivo considerado positivo.",
+      "english": "Quality"
+    },
+    {
+      "term": "Deformación",
+      "letter": "D",
+      "definition": "Alteración de las características morfológicas de un objeto. Acción en la cual se altera la forma de un objeto sin modificar su origen.",
+      "english": "Deformation"
+    },
+    {
+      "term": "Diferenciar",
+      "letter": "D",
+      "definition": "Establecer mediante la observación y comparación lo diverso o distintivo de otro.",
+      "english": "Differentiate"
+    },
+    {
+      "term": "Dinámico",
+      "letter": "D",
+      "type": "Adj.",
+      "definition": "Sistema de fuerzas dirigidas a un fin. Perteneciente a la fuerza producida por movimiento. Que se adapta de manera continua a las condiciones del ambiente, transformándose a través del tiempo, evolucionando permanentemente.",
+      "english": "Dynamic"
+    },
+    {
+      "term": "Efímero, efímera",
+      "letter": "E",
+      "type": "Adj.",
+      "definition": "De corta duración. Creado con el objetivo de ser desmontado o desarmado en un lapso corto de tiempo. Diseño que responde una fabricación, montaje y desmontaje breve.",
+      "english": "Ephemeral"
+    },
+    {
+      "term": "Emergente",
+      "letter": "E",
+      "definition": "Sistema no centralizado o jerárquico. Surgimiento de propiedades novedosas y coherentes durante los procesos de auto organización de sistemas complejos. Estos sistemas son consecuencia de propuestas dinámicas, complejas y evolutivas.",
+      "english": "Emergent"
+    },
+    {
+      "term": "Entorno",
+      "letter": "E",
+      "definition": "Conjunto de factores sociales, culturales, económicos, profesionales, climáticos, etc. que rodean un objeto o persona. Marco en el cual se establece cualquier solución o diseño.",
+      "synonym": "Ambiente, contexto",
+      "english": "Environment"
+    },
+    {
+      "term": "Equilibrio",
+      "letter": "E",
+      "definition": "Estado en el cual un objeto contiene una proporción adecuada en la distribución de los elementos que la constituyen. Relación de dos o más cosas que coexisten sin que alguna de ellas prevalezca sobre la otra.",
+      "english": "Equilibrium"
+    },
+    {
+      "term": "Equivalente",
+      "letter": "E",
+      "type": "Adj.",
+      "definition": "Que tiene igual área o volumen que otro objeto, pero morfológicamente (de forma) diferentes.",
+      "english": "Equivalent"
+    },
+    {
+      "term": "Espacio",
+      "letter": "E",
+      "definition": "Medio físico y tridimensional en el que sitúan los cuerpos. Puede estar delimitado por una serie de planos o ser ilimitado.",
+      "english": "Space",
+      "related_terms": [
+        {
+          "term": "Espacio heterogéneo",
+          "definition": "Es aquel que produce y permite diferenciación y discontinuidad en relación con la cualidad y organización de múltiples condiciones dentro de una coherencia general. (Espacio contemporáneo)",
+          "english": "Heterogeneous space"
+        },
+        {
+          "term": "Espacio homogéneo",
+          "definition": "Es aquel en el que las condiciones son uniformes (Espacio moderno), o collage de diferentes elementos formales (Espacio posmoderno)",
+          "english": "Homogeneous space"
+        }
+      ]
+    },
+    {
+      "term": "Esquema",
+      "letter": "E",
+      "definition": "Representación gráfica o simbólica de una cosa material o inmaterial. Idea o concepto de algún objeto.",
+      "synonym": "Diagrama, sketch",
+      "english": "Scheme"
+    },
+    {
+      "term": "Estructura",
+      "letter": "E",
+      "definition": "Configuración de personas, espacios u objetos de manera que se explica una generalidad a pesar de la segmentación de los elementos con los que está conformado. Distribución o relación de las partes de un conjunto. En arquitectura, armadura de cualquier materialidad que sirve de sustento a un edificio.",
+      "english": "Structure"
+    },
+    {
+      "term": "Evolución",
+      "letter": "E",
+      "definition": "Cambio de forma. Series de transformaciones secuenciales. Sucesiones generacionales de un objeto más o menos graduales y continuos. Cualquier propuesta que es capaz de variar, mutar, deformar con ciertas reglas a través del tiempo.",
+      "english": "Evolution"
+    },
+    {
+      "term": "Fantásticas visiones",
+      "letter": "F",
+      "definition": "Reto formador en el entendimiento del acto de diseñar; vital para el desarrollo de trayectorias profesionales del ramo.",
+      "english": "Fantastic visions"
+    },
+    {
+      "term": "Forma",
+      "letter": "F",
+      "definition": "Conjunto de superficies que determinan el volumen de un objeto. Condiciones físicas. Configuración externa en la que se presenta la materia y/o contenido de algo.",
+      "english": "Form"
+    },
+    {
+      "term": "Génesis",
+      "letter": "G",
+      "definition": "Origen o principio de una cosa. Proceso de generación de las formas.",
+      "english": "Genesis"
+    },
+    {
+      "term": "Heterogéneo",
+      "letter": "H",
+      "type": "Adj.",
+      "definition": "Conformado por elementos de diferente naturaleza. Espacio heterogéneo es aquel generado por una diversidad de elementos.",
+      "antonym": "Homogéneo",
+      "english": "Heterogeneous"
+    },
+    {
+      "term": "Homogéneo",
+      "letter": "H",
+      "type": "Adj.",
+      "definition": "Conformado por elementos iguales, estableciendo semejanza y uniformidad. Espacio homogéneo es aquel generado por elementos equivalentes o complementarios.",
+      "antonym": "Heterogéneo",
+      "english": "Homogeneous"
+    },
+    {
+      "term": "Irregular",
+      "letter": "I",
+      "type": "Adj.",
+      "definition": "No uniforme con relación a forma o características de los objetos de su misma clase. Carente de anatomía, en eterno desequilibrio. Configuración no antropomórfica.",
+      "example": "Polígono irregular",
+      "english": "Irregular"
+    },
+    {
+      "term": "Morfología",
+      "letter": "M",
+      "definition": "Estudio de la estructura y los elementos constitutivos de los objetos. Estudio de la forma, modificaciones y transformaciones de los objetos. Estructura de sistemas traslapados e interconectados.",
+      "english": "Morphology"
+    },
+    {
+      "term": "Objetivo, objetiva",
+      "letter": "O",
+      "definition": "Independiente de la manera de pensar del individuo, basándose en los hechos y lógica o racionalidad.",
+      "english": "Objective"
+    },
+    {
+      "term": "Orden",
+      "letter": "O",
+      "definition": "Distribución de las cosas según un criterio determinado o establecido. Dispuesto o colocado en sucesión o en relación con otro elemento.",
+      "antonym": "Caos",
+      "english": "Order"
+    },
+    {
+      "term": "Ortogonal",
+      "letter": "O",
+      "type": "Adj.",
+      "definition": "Que forma ángulo recto.",
+      "synonym": "Perpendicular",
+      "english": "Orthogonal"
+    },
+    {
+      "term": "Percepción",
+      "letter": "P",
+      "definition": "Conocimiento inicial de un objeto por medio de los sentidos.",
+      "english": "Perception"
+    },
+    {
+      "term": "Perpendicular",
+      "letter": "P",
+      "type": "Adj.",
+      "definition": "Conforma un ángulo recto con otra línea, plano o volumen.",
+      "synonym": "Ortogonal",
+      "english": "Perpendicular"
+    },
+    {
+      "term": "Práctico, práctica",
+      "letter": "P",
+      "definition": "Que se ajusta a una realidad con la finalidad de ser útil.",
+      "synonym": "Útil",
+      "english": "Practical"
+    },
+    {
+      "term": "Proceso",
+      "letter": "P",
+      "definition": "Conjunto de pasos o procedimientos que se llevan a cabo para elaborar o transformar un objeto. El establecimiento de un proceso para el diseño de elementos favorece de manera práctica la obtención de resultados claros.",
+      "english": "Process"
+    },
+    {
+      "term": "Relativo, relativa",
+      "letter": "R",
+      "definition": "Proceso o diseño limitado, incompleto o depende de la relación establecida con otro proceso. Con relación a algún otro elemento.",
+      "antonym": "Absoluto",
+      "english": "Relative"
+    },
+    {
+      "term": "Sistema",
+      "letter": "S",
+      "definition": "Conjunto de elementos, reglas, principios o procedimientos relacionados entre sí, de manera que en un conjunto apoyan al funcionamiento y coherencia de una propuesta. Sistemas dinámicos favorecen el establecimiento de propuestas novedosas.",
+      "english": "System"
+    },
+    {
+      "term": "Sustancia",
+      "letter": "S",
+      "definition": "Componente o materia de todos los cuerpos, esencialmente constituye la naturaleza o realidad de los objetos.",
+      "synonym": "Materia",
+      "english": "Substance"
+    },
+    {
+      "term": "Subjetivo, subjetiva",
+      "letter": "S",
+      "type": "Adj.",
+      "definition": "Dependiente de la manera de pensar del individuo, basándose en la perspectiva del sujeto o quien juzga y no al objeto. Transmite juicios sin basarse en hechos y lógica o racionalidad.",
+      "antonym": "Objetivo",
+      "english": "Subjective"
+    },
+    {
+      "term": "Superficie",
+      "letter": "S",
+      "definition": "Elemento bidimensional, el cual considera únicamente largo y ancho (carente de espesor). Con relación a las coordenadas cartesianas considera únicamente X Y. La superficie contemporánea representa topográficamente sistemas de interconexión a manera de doblez sin perder su propiedad plana.",
+      "english": "Surface"
+    },
+    {
+      "term": "Temporal",
+      "letter": "T",
+      "definition": "De corto tiempo o duración. Establece relación con un momento (tiempo) específico.",
+      "synonym": "Efímero",
+      "english": "Temporary"
+    },
+    {
+      "term": "Teórico, teórica",
+      "letter": "T",
+      "type": "Adj.",
+      "definition": "Pensamiento o ideas especulativa con relación a algo. Propuesta que se basa en la documentación o lógica sin existir realmente.",
+      "english": "Theoretical"
+    },
+    {
+      "term": "Topografía",
+      "letter": "T",
+      "definition": "Relieve o superficie determinada de un terreno. Movimiento establecido en la naturaleza resultado de sistemas dinámicos. Topografía puede ser manipulada por factores naturales y artificiales.",
+      "english": "Topography"
+    },
+    {
+      "term": "Topología",
+      "letter": "T",
+      "definition": "Ciencia que describe las propiedades geométricas de los objetos, de manera abstracta, independientemente de su tamaño.",
+      "example": "Una dona y una tetera topológicamente son iguales",
+      "english": "Topology"
+    },
+    {
+      "term": "Utopía",
+      "letter": "U",
+      "definition": "Exploración o creación imaginaria de una visión inexistente. Proyecto en el que se proponen soluciones con características difíciles de concretar en la época en la que es planteado.",
+      "antonym": "Realidad",
+      "reference": "Lebbeus Woods, Antonio Sant'Elia + Futurismo italiano, Yona Friedman",
+      "english": "Utopia"
+    }
+  ],
+  "bibliography": [
+    "Aguirre, Adrián. (2016) Accidental Architecture, Amazon Kindle.",
+    "Diccionario de la lengua española. Madrid, España. http://dle.rae.es",
+    "Gausa, Manuel & Guallart, Vicente & Müller, Willy & Soriano, Federico & Porras, Fernando, et al. (1993) Diccionario metápolis de arquitectura avanzada. Barcelona, España. Institut d'Arquitectura Avançada de Catalunya (IAAC)",
+    "Hansel, Michael & Hight, Christopher & Menges, Achim. (2009) Space reader. Heterogeneous Space in Architecture. Padstow, Reino Unido. John Wiley & Sons Ltd."
+  ]
+}
