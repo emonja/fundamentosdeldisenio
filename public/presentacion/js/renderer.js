@@ -29,6 +29,18 @@ export function render(stage,state,role,studentId="guest",actions={}){
  cleanup(); cleanup=()=>{}; stage.innerHTML=""; stage.className="stage"; stage.style.background="";
  const slide=slideById(state.slide); if(state.inverted)stage.classList.add("invert");
  if(slide.type==="text"){stage.innerHTML='<div class="title"></div>';stage.firstChild.textContent=slide.text;return}
+ if(slide.type==="bye"){const t=document.createElement("div"),credit=document.createElement("div");t.className="title";t.textContent="/bye";credit.className="bye-credit";credit.textContent="Presentación realizada con el apoyo de GPT-5.6 Sol";stage.append(t,credit);return}
+ if(slide.type==="aiRules"){
+  const panel=document.createElement("section");panel.className="ai-rules";const heading=document.createElement("h1");heading.textContent="USO DE IA EN EL TALLER";panel.append(heading);
+  const rules=[
+   ["01 / PRIMERO, SIN IA","Explora, dibuja, corta y construye a mano. No generes patrones, volúmenes ni geometrías con IA antes de trabajarlos físicamente."],
+   ["02 / DESPUÉS, CON IA","Úsala para iterar sobre tus propios hallazgos, no para resolver el ejercicio por ti."],
+   ["03 / SÉ TRANSPARENTE","Indica la herramienta, el prompt y cómo te ayudó en cada entrega."],
+   ["04 / DECIDE TÚ","Cuestiona la originalidad, calidad y sesgos de cada resultado."],
+   ["05 / ENTREGA ÍNTEGRA","Compara tu modelo físico con la iteración con IA. No entregues renders que no correspondan a ese modelo ni presentes como propio un diseño generado por completo por IA."]
+  ];
+  for(const [label,detail] of rules){const row=document.createElement("div"),name=document.createElement("strong"),body=document.createElement("span");row.className="ai-rule";name.textContent=label;body.textContent=detail;row.append(name,body);panel.append(row)}stage.append(panel);return
+ }
  if(slide.type==="image"){const img=new Image();img.className="art";img.alt="";img.src=slide.src;img.onerror=()=>{if(img.isConnected){stage.innerHTML='<div class="missing">IMAGEN PENDIENTE · '+slide.src.split("/").pop()+'</div>'}};stage.append(img);if(slide.caption){const c=document.createElement("div");c.className="caption";c.textContent=slide.caption;stage.append(c)}return}
  if(slide.type==="perception"){const odd=role==="student"&&actions.entryOrder%2===1;if(odd){const box=document.createElement("div");box.className="switch";box.innerHTML='<span>LUZ</span><button type="button" aria-label="Cambiar luz">'+(state.inverted?"ON":"OFF")+'</button>';box.querySelector("button").onclick=()=>actions.toggleInvert?.();stage.append(box)}else{const t=document.createElement("div");t.className="title";t.textContent="PERCEPCIÓN";stage.append(t)}return}
  if(slide.type==="noise"){const c=document.createElement("canvas");c.className="full";stage.append(c);const x=c.getContext("2d");let raf;const draw=()=>{c.width=Math.max(160,Math.floor(innerWidth/5));c.height=Math.max(90,Math.floor(innerHeight/5));const im=x.createImageData(c.width,c.height);for(let i=0;i<im.data.length;i+=4){im.data[i]=Math.random()*256;im.data[i+1]=Math.random()*256;im.data[i+2]=Math.random()*256;im.data[i+3]=255}x.putImageData(im,0,0);raf=requestAnimationFrame(draw)};draw();cleanup=()=>cancelAnimationFrame(raf);return}

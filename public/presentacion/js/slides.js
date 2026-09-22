@@ -42,6 +42,7 @@ export const slides = [
 {id:"talking-03",section:"6",label:"Talking Heads 03",type:"image",src:"images/talking-03.jpg"},
 {id:"joy",section:"6",label:"Joy Division",type:"image",src:"images/joy-01.jpg"},
 {id:"no-color",section:"6",label:"NO COLOR",type:"noColor",text:"NO COLOR"},
-{id:"bye",section:"6",label:"/bye",type:"text",text:"/bye"}
+{id:"bye",section:"6",label:"/bye",type:"bye",text:"/bye"},
+{id:"ai-rules",section:"6",label:"Uso de IA en el taller",type:"aiRules"}
 ];
 export const slideById=id=>slides.find(s=>s.id===id)||slides[0];
