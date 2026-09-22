@@ -1,0 +1,25 @@
+export const slides = [
+{id:"esteban",section:"1",label:"Esteban De la Monja",type:"text",text:"ESTEBAN DE LA MONJA"},
+{id:"percepcion",section:"2",label:"PERCEPCIÓN",type:"perception",text:"PERCEPCIÓN"},
+{id:"rorschach",section:"2",label:"Rorschach",type:"image",src:"images/rorschach.jpg"},
+{id:"rabbit-duck",section:"2",label:"Rabbit / Duck",type:"image",src:"images/rabbit_duck.jpg"},
+{id:"mundo-plano",section:"3",label:"EL MUNDO PLANO",type:"text",text:"EL MUNDO PLANO"},
+{id:"altamira",section:"3",label:"Altamira",type:"image",src:"images/altamira.jpg",caption:"Bisonte Magdaleniense polícromo."},
+{id:"nebamun",section:"3",label:"Nebamun",type:"image",src:"images/nebamun.jpg",caption:"Tumba de Nebamun, Tebas."},
+{id:"perspectiva",section:"3",label:"Perspectiva",type:"image",src:"images/perspectiva.jpg",caption:"Fresco de la Villa de Publio Fannio Sinístor, Boscoreale, cerca de Pompeya, siglo I a. C."},
+{id:"daguerre",section:"3",label:"Daguerre",type:"image",src:"images/daguerre.jpg",caption:"Boulevard du Temple, París, III distrito. Daguerrotipo."},
+{id:"basquiat",section:"3",label:"Basquiat",type:"image",src:"images/basquiat.jpg",caption:"Untitled (skull), 1981. Jean-Michel Basquiat"},
+{id:"pollock",section:"3",label:"Pollock",type:"image",src:"images/pollock.jpg"},
+{id:"rothko",section:"3",label:"Rothko",type:"image",src:"images/rothko.jpg"},
+{id:"pixel",section:"3",label:"PIXEL",type:"noise"},
+{id:"proyeccion",section:"4",label:"PROYECCIÓN",type:"text",text:"PROYECCIÓN"},
+{id:"camera-obscura",section:"4",label:"Camera obscura",type:"image",src:"images/camera-obscura.jpg"},
+{id:"eye",section:"4",label:"Eye",type:"image",src:"images/eye.jpg"},
+{id:"webcam-obscura",section:"4",label:"Webcam / cámara oscura",type:"webcam"},
+{id:"cromosaturacion-live",section:"4",label:"Cromosaturación · RGB",type:"chroma"},
+{id:"cromosaturacion",section:"4",label:"Cromosaturación",type:"image",src:"images/cromosaturacion.jpg"},
+{id:"lenguaje",section:"5",label:"LENGUAJE",type:"text",text:"LENGUAJE"},
+{id:"punto",section:"5",label:"EL PUNTO",type:"point"},
+{id:"linea",section:"5",label:"LA LÍNEA",type:"line"}
+];
+export const slideById=id=>slides.find(s=>s.id===id)||slides[0];
