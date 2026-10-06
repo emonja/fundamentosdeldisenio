@@ -1,0 +1,20 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Instrument rehearsal fixture</title>
+<body><h1>Local browser fixture</h1><p>This page requires ?demo=1. It never accesses Firebase.</p>
+<button id="empty">Start empty rehearsal as Pedro</button><button id="populate">Populate 24 sample answers</button><p id="status" role="status"></p>
+<p><a href="../public/instrumento/?demo=1" target="_blank">Student</a> · <a href="../public/instrumento/control.html?demo=1" target="_blank">Master</a> · <a href="../public/instrumento/projection.html?demo=1" target="_blank">Projection</a></p>
+<script type="module">
+if (new URLSearchParams(location.search).get('demo') !== '1') throw new Error('Fixture requires ?demo=1');
+const {changeState, choose, watch} = await import('../public/instrumento/realtime.mjs');
+const {roster} = await import('../public/instrumento/model.mjs');
+let state;
+watch('state', value => state=value);
+document.querySelector('#empty').onclick = async () => {
+  await changeState(()=>({session:crypto.randomUUID(),excludedId:roster[24].id,stage:'preparation'}));
+  localStorage.setItem('fd-demo-identity',roster[0].id);
+  document.querySelector('#status').textContent='Empty session ready. Open student.';
+};
+document.querySelector('#populate').onclick = async () => {
+  for(let i=0;i<24;i++) await choose(state.session,roster[i],i%4);
+  document.querySelector('#status').textContent='24 sample answers ready; first answers remain locked.';
+};
+</script></body></html>
