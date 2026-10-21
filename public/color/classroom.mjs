@@ -60,9 +60,11 @@ if (view === 'projection') {
         else noteFades.delete(pitch);
         continue;
       }
-      if (old.seq !== note.seq || old.active !== note.active) {
+      const seqChanged = old.seq !== note.seq;
+      if (seqChanged || old.active !== note.active || old.velocity !== note.velocity) {
         if (note.active) noteFades.set(pitch, {at:now, active:true});
         else if (old.active) noteFades.set(pitch, {at:now, active:false});
+        else if (seqChanged && Number(note.velocity) > 0) noteFades.set(pitch, {at:now, active:false});
       }
     }
     notes = incoming;
