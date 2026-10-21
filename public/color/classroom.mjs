@@ -14,6 +14,7 @@ const statePath = 'color/classroom/state';
 const stateNode = ref(db, statePath);
 let state = null;
 let online = false;
+let sessionId = null;
 let localState = null;
 let base = null;
 let baseCanvas = null;
@@ -40,7 +41,12 @@ onValue(ref(db, '.info/connected'), snap => {
 });
 
 onValue(stateNode, snap => {
-  state = snap.val();
+  const incoming = snap.val();
+  if (view === 'student' && incoming?.session !== sessionId) {
+    sessionId = incoming?.session || null;
+    base = null; paintLayer = null; stopCamera(); currentStage = '';
+  }
+  state = incoming;
   if (view === 'control') renderControl();
   if (view === 'student') renderStudent();
   if (view === 'projection') renderProjection();
@@ -239,7 +245,7 @@ function renderStudent() {
   }
   if (currentStage !== state.stage) {
     currentStage = state.stage;
-    if (state.stage !== 'explore' && state.stage !== 'paint') stopCamera();
+    stopCamera();
     if (state.stage === 'welcome' || state.stage === 'piano' || state.stage === 'harmony' || state.stage === 'tool') {
       app.className = 'student-screen';
       renderStudentStatic(app, state.stage);
@@ -316,7 +322,7 @@ function renderPhotoControls(id) {
     });
     const actions=document.createElement('div'); actions.className='photo-actions';
     const retake=document.createElement('button'); safeText(retake,'Otra foto');
-    retake.onclick=()=>{base=null;paintLayer=null;root.hidden=true;startCamera();};
+    retake.onclick=()=>{base=null;paintLayer=null;const canvas=$('canvas');if(canvas)canvas.hidden=true;root.hidden=true;startCamera();};
     actions.append(retake); root.append(controls,actions);
   } else {
     const row=document.createElement('div'); row.className='paint-toolbar';
@@ -416,7 +422,5 @@ function paintAt(a,b) {
   drawPhoto('paint');
 }
 
-function renderReference() {
-  // Kept as a compact combined shell; the two original teaching resources remain intact.
-}
+window.addEventListener('pagehide', stopCamera);
 
