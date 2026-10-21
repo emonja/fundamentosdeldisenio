@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Devolver el color</title>
+<style>
+  :root { --bg:#7a7a7a; --panel:#6b6b6b; --ink:#f2f2f2; --line:#8f8f8f; }
+  * { box-sizing:border-box; }
+  html,body { height:100%; margin:0; }
+  body { background:var(--bg); color:var(--ink); font:16px/1.4 "Helvetica Neue",Arial,sans-serif; display:flex; flex-direction:column; }
+  header { padding:14px 18px 0; }
+  h1 { font-size:1.1rem; font-weight:600; margin:0; }
+  header p { margin:2px 0 0; font-size:.9rem; opacity:.85; }
+  main { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; padding:12px 18px 16px; gap:12px; }
+  .stage { flex:1; min-height:0; width:100%; display:flex; align-items:center; justify-content:center; }
+  video, canvas { max-width:100%; max-height:100%; background:#555; display:none; }
+  canvas { touch-action:none; cursor:crosshair; }
+  .msg { max-width:34ch; text-align:center; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; }
+  button { font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line); padding:9px 16px; border-radius:6px; cursor:pointer; }
+  button:hover { background:#5c5c5c; }
+  button:focus-visible, input:focus-visible, .hue:focus-visible { outline:3px solid #fff; outline-offset:2px; }
+  #shot { width:74px; height:74px; border-radius:50%; background:#fff; border:5px solid var(--bg); box-shadow:0 0 0 3px #fff; padding:0; }
+  #shot:hover { background:#e6e6e6; }
+  .tools { display:none; width:100%; max-width:560px; flex-direction:column; gap:12px; align-items:center; }
+  /* the only color on the page: a thin hue strip */
+  .hue { position:relative; width:100%; height:14px; border-radius:7px; cursor:pointer; touch-action:none;
+         background:linear-gradient(90deg,hsl(0,100%,50%),hsl(60,100%,50%),hsl(120,100%,50%),hsl(180,100%,50%),hsl(240,100%,50%),hsl(300,100%,50%),hsl(360,100%,50%)); }
+  .hue i { position:absolute; top:-4px; width:22px; height:22px; margin-left:-11px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.5); pointer-events:none; }
+  label { font-size:.85rem; display:flex; align-items:center; gap:8px; }
+  input[type=range] { width:120px; accent-color:#fff; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Devolver el color</h1>
+  <p>Toma una foto en blanco y negro y píntale color encima, poco a poco.</p>
+</header>
+
+<main>
+  <div class="stage">
+    <p class="msg" id="msg">Para empezar, permite el acceso a la cámara.</p>
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="row" id="liveRow" hidden>
+    <button id="flip">Cambiar cámara</button>
+    <button id="shot" aria-label="Tomar foto"></button>
+  </div>
+
+  <div class="tools" id="tools">
+    <div class="hue" id="hue" tabindex="0" role="slider" aria-label="Color" aria-valuemin="0" aria-valuemax="360" aria-valuenow="200"><i id="knob"></i></div>
+    <div class="row">
+      <label>Pincel <input type="range" id="size" min="2" max="14" value="6" aria-label="Tamaño del pincel"></label>
+      <button id="clear">Borrar color</button>
+      <button id="save">Descargar</button>
+      <button id="retake">Otra foto</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const video = $('video'), canvas = $('canvas'), ctx = canvas.getContext('2d');
+const msg = $('msg'), liveRow = $('liveRow'), tools = $('tools'), hueEl = $('hue'), knob = $('knob');
+const MAX_W = 1280, FLOW = 0.09;   // FLOW: how much color each touch adds. Low = washes in slowly.
+
+const baseC = document.createElement('canvas');    // the B&W photo
+const paintC = document.createElement('canvas');   // the color strokes, kept apart so they can be blended
+const bctx = baseC.getContext('2d'), pctx = paintC.getContext('2d');
+
+let stream = null, facing = 'environment', hue = 200, hasPhoto = false, painting = false, last = null, raf = 0;
+
+// Blend mode "color" keeps the photo's light and dark and takes only hue + saturation from the paint.
+ctx.globalCompositeOperation = 'color';
+const BLEND = ctx.globalCompositeOperation === 'color' ? 'color' : 'overlay';
+ctx.globalCompositeOperation = 'source-over';
+
+async function startCamera() {
+  stopCamera(); hasPhoto = false;
+  canvas.style.display = 'none'; tools.style.display = 'none';
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    msg.textContent = 'La cámara necesita una conexión segura (HTTPS) o localhost. Abre la página desde un servidor.';
+    msg.hidden = false; return;
+  }
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: facing }, width: { ideal: 1920 } }, audio: false });
+    video.srcObject = stream; await video.play();
+    msg.hidden = true; video.style.display = 'block'; liveRow.hidden = false;
+  } catch (e) {
+    msg.hidden = false; liveRow.hidden = true; video.style.display = 'none';
+    msg.textContent = e.name === 'NotAllowedError'
+      ? 'Se bloqueó el acceso a la cámara. Permítelo en la configuración del navegador y recarga la página.'
+      : 'No se pudo abrir la cámara (' + e.name + ').';
+  }
+}
+function stopCamera() { if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; }
+
+function capture() {
+  const vw = video.videoWidth; if (!vw) return;
+  const s = Math.min(1, MAX_W / vw), w = Math.round(vw * s), h = Math.round(video.videoHeight * s);
+  canvas.width = baseC.width = paintC.width = w;
+  canvas.height = baseC.height = paintC.height = h;
+  bctx.drawImage(video, 0, 0, w, h);
+  const img = bctx.getImageData(0, 0, w, h), d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const y = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+    d[i] = d[i+1] = d[i+2] = y;
+  }
+  bctx.putImageData(img, 0, 0);
+  pctx.clearRect(0, 0, w, h);
+  stopCamera(); hasPhoto = true;
+  video.style.display = 'none'; liveRow.hidden = true;
+  canvas.style.display = 'block'; tools.style.display = 'flex';
+  render();
+}
+
+function render() {
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(baseC, 0, 0);
+  ctx.globalCompositeOperation = BLEND;
+  ctx.drawImage(paintC, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+}
+function schedule() { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); }
+
+function dab(x, y) {
+  const r = canvas.width * $('size').value / 100;
+  const g = pctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, `hsla(${hue},100%,50%,${FLOW})`);
+  g.addColorStop(1, `hsla(${hue},100%,50%,0)`);
+  pctx.fillStyle = g;
+  pctx.fillRect(x - r, y - r, r * 2, r * 2);
+}
+function stroke(x, y) {
+  const r = canvas.width * $('size').value / 100, step = Math.max(2, r * 0.2);
+  if (!last) { dab(x, y); }
+  else {
+    const dx = x - last.x, dy = y - last.y, dist = Math.hypot(dx, dy), n = Math.floor(dist / step);
+    for (let i = 1; i <= n; i++) dab(last.x + dx * i / n, last.y + dy * i / n);
+    if (!n) return;   // not moved far enough yet; keep the previous point
+  }
+  last = { x, y }; schedule();
+}
+function pt(e) {
+  const r = canvas.getBoundingClientRect();
+  return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height];
+}
+canvas.addEventListener('pointerdown', e => { if (!hasPhoto) return; painting = true; last = null; canvas.setPointerCapture(e.pointerId); stroke(...pt(e)); });
+canvas.addEventListener('pointermove', e => { if (painting) stroke(...pt(e)); });
+['pointerup','pointercancel'].forEach(t => canvas.addEventListener(t, () => { painting = false; last = null; }));
+
+// hue strip
+function setHue(h) {
+  hue = Math.max(0, Math.min(360, h));
+  knob.style.left = (hue / 360 * 100) + '%';
+  knob.style.background = `hsl(${hue},100%,50%)`;
+  hueEl.setAttribute('aria-valuenow', Math.round(hue));
+}
+function hueFrom(e) { const r = hueEl.getBoundingClientRect(); setHue((e.clientX - r.left) / r.width * 360); }
+let hdrag = false;
+hueEl.addEventListener('pointerdown', e => { hdrag = true; hueEl.setPointerCapture(e.pointerId); hueFrom(e); });
+hueEl.addEventListener('pointermove', e => { if (hdrag) hueFrom(e); });
+['pointerup','pointercancel'].forEach(t => hueEl.addEventListener(t, () => hdrag = false));
+hueEl.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') setHue(hue + (e.shiftKey ? 15 : 3));
+  else if (e.key === 'ArrowLeft') setHue(hue - (e.shiftKey ? 15 : 3));
+  else return;
+  e.preventDefault();
+});
+
+$('shot').addEventListener('click', capture);
+$('flip').addEventListener('click', () => { facing = facing === 'environment' ? 'user' : 'environment'; startCamera(); });
+$('retake').addEventListener('click', startCamera);
+$('clear').addEventListener('click', () => { pctx.clearRect(0, 0, paintC.width, paintC.height); render(); });
+$('save').addEventListener('click', () => {
+  const a = document.createElement('a'); a.download = 'color-devuelto.png'; a.href = canvas.toDataURL('image/png'); a.click();
+});
+
+setHue(hue);
+startCamera();
+</script>
+</body>
+</html>
