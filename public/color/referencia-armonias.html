@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#555"><title>Rueda y armonías · Color</title><link rel="stylesheet" href="classroom.css"></head>
+<body class="reference">
+<header><h1>Rueda y armonías</h1><nav class="tabs" aria-label="Referencia"><button id="wheelTab" aria-pressed="true">Rueda cromática</button><button id="harmonyTab" aria-pressed="false">Armonías</button></nav></header>
+<iframe id="referenceFrame" title="Referencia de color" src="rueda-cromatica.html"></iframe>
+<script>
+const frame=document.getElementById('referenceFrame');
+const wheel=document.getElementById('wheelTab'), harmony=document.getElementById('harmonyTab');
+function show(which){const isWheel=which==='wheel';frame.src=isWheel?'rueda-cromatica.html':'armonias-referencia.html';wheel.setAttribute('aria-pressed',String(isWheel));harmony.setAttribute('aria-pressed',String(!isWheel));}
+wheel.addEventListener('click',()=>show('wheel'));
+harmony.addEventListener('click',()=>show('harmony'));
+</script>
+</body></html>
