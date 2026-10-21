@@ -98,8 +98,12 @@ function renderControl() {
   const stepper = document.createElement('div');
   stepper.className = 'stepper';
   STAGES.forEach((item, i) => {
-    const row = document.createElement('div');
+    const row = document.createElement('button');
+    row.type = 'button';
     row.className = 'step' + (i === idx ? ' current' : i < idx ? ' passed' : '');
+    row.disabled = !active || !online;
+    if (i === idx) row.setAttribute('aria-current', 'step');
+    row.onclick = () => moveStage(i);
     const n = document.createElement('span'); n.className = 'step-number'; safeText(n, String(i+1).padStart(2,'0'));
     const label = document.createElement('span'); label.className = 'step-label'; safeText(label, item.label);
     row.append(n, label); stepper.append(row);
@@ -181,6 +185,18 @@ function renderProjection() {
   };
   safeText(copy, prompts[state.stage] || '');
   app.append(copy);
+  if (state.stage === 'tool') {
+    const credits = document.createElement('div');
+    credits.className = 'projection-credits';
+    const heading = document.createElement('p');
+    safeText(heading, 'Hecho posible con el arduo trabajo de nuestros amigos:');
+    const claude = document.createElement('p');
+    safeText(claude, 'Anthropic’s Claude Sonet 5.5');
+    const openai = document.createElement('p');
+    safeText(openai, 'OpenAI GPT-6 Luna');
+    credits.append(heading, claude, openai);
+    app.append(credits);
+  }
   if (state.stage === 'harmony' || state.stage === 'tool') {
     const a = document.createElement('a');
     a.className = 'projection-link';
@@ -202,11 +218,13 @@ function startBlobAnimation() {
     if (canvas.width !== w || canvas.height !== h) { canvas.width=w; canvas.height=h; }
     const c = canvas.getContext('2d');
     c.setTransform(dpr,0,0,dpr,0,0);
-    c.clearRect(0,0,rect.width,rect.height);
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = '#080a12';
+    c.fillRect(0,0,rect.width,rect.height);
     const palette = [8,20,194,337,207,222,15,329,198,349,216,28];
-    c.globalCompositeOperation = 'screen';
+    c.globalCompositeOperation = 'lighter';
     for (const [pitch,note] of Object.entries(notes)) {
-      const fade = note.active ? 1 : Math.max(0,1-(now-(noteFades.get(pitch)?.at||now))/1900);
+      const fade = note.active ? 1 : Math.max(0,1-(now-(noteFades.get(pitch)?.at||now))/280);
       if (fade <= 0) continue;
       const p = Number(note.pitch ?? pitch), hue = palette[p%12];
       const x = rect.width*(.15 + ((p-36+48)%48)/48*.7);
@@ -215,9 +233,9 @@ function startBlobAnimation() {
       const r = Math.min(rect.width,rect.height)*(.12+v*.12);
       const pulse = 1 + Math.sin(now*.001 + p)*.035;
       const g = c.createRadialGradient(x,y,1,x,y,r*1.9*pulse);
-      g.addColorStop(0,'hsla('+hue+',100%,72%,'+(.28*fade)+')');
-      g.addColorStop(.32,'hsla('+hue+',100%,58%,'+(.2*fade)+')');
-      g.addColorStop(.72,'hsla('+hue+',100%,48%,'+(.06*fade)+')');
+      g.addColorStop(0,'hsla('+hue+',100%,72%,'+(.18*fade)+')');
+      g.addColorStop(.32,'hsla('+hue+',100%,58%,'+(.12*fade)+')');
+      g.addColorStop(.72,'hsla('+hue+',100%,48%,'+(.035*fade)+')');
       g.addColorStop(1,'hsla('+hue+',100%,45%,0)');
       c.fillStyle=g; c.beginPath(); c.arc(x,y,r*1.9*pulse,0,Math.PI*2); c.fill();
     }
@@ -264,10 +282,10 @@ function renderStudentStatic(app, id) {
   const p = document.createElement('p'); p.className = 'student-prompt'; safeText(p, item.student);
   app.append(eyebrow,h,p);
   if (id === 'harmony') {
-    const a=document.createElement('a'); a.className='student-link'; a.href='referencia-armonias.html'; safeText(a,'Abrir rueda y armonías'); app.append(a);
+    const a=document.createElement('a'); a.className='student-link'; a.href='referencia-armonias.html'; a.target='_blank'; a.rel='noopener'; safeText(a,'Abrir rueda y armonías'); app.append(a);
   }
   if (id === 'tool') {
-    const a=document.createElement('a'); a.className='student-link'; a.href='rueda-color.html'; safeText(a,'Abrir herramienta útil'); app.append(a);
+    const a=document.createElement('a'); a.className='student-link'; a.href='rueda-color.html'; a.target='_blank'; a.rel='noopener'; safeText(a,'Abrir herramienta útil'); app.append(a);
   }
 }
 function renderPhotoActivity(app, id) {
