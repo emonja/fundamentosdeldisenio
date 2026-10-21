@@ -52,7 +52,8 @@ onValue(stateNode, snap => {
 if (view === 'projection') {
   onValue(ref(db, 'color/broadcast/notes'), snap => {
     const incoming = snap.val() || {};
-    const now = Date.now();
+    // Match requestAnimationFrame's clock so note releases can expire.
+    const now = performance.now();
     for (const [pitch, note] of Object.entries(incoming)) {
       const old = notes[pitch];
       if (!old) {
