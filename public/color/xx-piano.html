@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Punch-Drunk Synesthesia</title>
+<style>
+  /* Variables and Base Styling from your reference */
+  :root { --bg:#7a7a7a; --panel:#6b6b6b; --ink:#f2f2f2; --line:#8f8f8f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 "Helvetica Neue",Arial,sans-serif; }
+  header { padding:14px 18px 0; }
+  h1 { font-size:1.1rem; font-weight:600; margin:0; }
+  header p { margin:2px 0 0; font-size:.9rem; opacity:.85; }
+  
+  main { padding:16px 18px 28px; display:flex; justify-content:center; }
+  .panel { flex:1 1 100%; max-width:800px; background:var(--panel); border-radius:8px; padding:14px 16px; }
+  
+  /* The Visualizer Screen (Punch-Drunk Love aesthetic) */
+  #screen {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    background-color: #a2c2ff; /* Light blue background */
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-top: 10px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+  }
+
+  /* Blob styling */
+  .blob {
+    position: absolute;
+    width: 120px; /* Elliptical shape */
+    height: 180px;
+    border-radius: 50%;
+    filter: blur(35px); /* Heavy blur for soft edges */
+    opacity: 0; /* Hidden by default */
+    transform: translate(-50%, -50%) scale(0.4);
+    transition: opacity 0.3s ease-out, transform 0.4s ease-out;
+    mix-blend-mode: hard-light; /* For overlapping color blend */
+  }
+
+  /* When a MIDI note is active */
+  .blob.active {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  
+  #status { font-size:.85rem; margin-top: 15px; font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Synesthetic MIDI Visualizer</h1>
+  <p>Reading notes 48-64 from Firebase RTDB</p>
+</header>
+
+<main>
+  <section class="panel">
+    <div id="screen"></div>
+    <div id="status">Esperando datos MIDI...</div>
+  </section>
+</main>
+
+<script type="module">
+  // Import Firebase directly from CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+  // 1. Setup Visual Blobs
+  const screen = document.getElementById('screen');
+  const blobs = {};
+  
+  // Create blobs for notes 48 to 64
+  for(let p = 48; p <= 64; p++) {
+    const blob = document.createElement('div');
+    blob.className = 'blob';
+    
+    // Color logic: Chromatic circle mapped to Hue (0-360)
+    // C = 0, C# = 30, D = 60, etc.
+    const pitchClass = p % 12; 
+    const hue = pitchClass * 30; 
+    blob.style.backgroundColor = `hsl(${hue}, 85%, 60%)`;
+    
+    // Position logic: Spread horizontally across screen (10% to 90%)
+    const xPos = 10 + ((p - 48) / 16) * 80;
+    // Add slight random vertical offset so they aren't in a perfect straight line
+    const yPos = 50 + (Math.random() * 20 - 10); 
+    
+    blob.style.left = `${xPos}%`;
+    blob.style.top = `${yPos}%`;
+    
+    screen.appendChild(blob);
+    blobs[p] = blob;
+  }
+
+  // 2. Firebase Connection
+  const firebaseConfig = {
+    databaseURL: "https://fundamentos501-default-rtdb.firebaseio.com"
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  
+  // 3. Listen to data stream
+  const notesRef = ref(db, 'color/broadcast/notes');
+  const statusEl = document.getElementById('status');
+
+  onValue(notesRef, (snapshot) => {
+    const data = snapshot.val();
+    if (!data) return;
+    
+    let activeNotes = [];
+
+    // Check our specific range of 48-64
+    for(let p = 48; p <= 64; p++) {
+      const noteData = data[p];
+      const blob = blobs[p];
+      
+      // If the node exists and is marked active = true
+      if (noteData && noteData.active === true) {
+        blob.classList.add('active');
+        activeNotes.push(p);
+      } else {
+        blob.classList.remove('active');
+      }
+    }
+    
+    // Update the UI text
+    if(activeNotes.length > 0) {
+      statusEl.textContent = `Notas activas: ${activeNotes.join(', ')}`;
+    } else {
+      statusEl.textContent = "Silencio...";
+    }
+  });
+</script>
+
+</body>
+</html>

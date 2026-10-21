@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelos de color</title>
+<style>
+  :root { --panel:#6b6b6b; --ink:#f2f2f2; --line:#8f8f8f; }
+  * { box-sizing:border-box; }
+  html,body { height:100%; margin:0; }
+  body { background:var(--panel); color:var(--ink); font:16px/1.4 "Helvetica Neue",Arial,sans-serif; display:flex; flex-direction:column; }
+  .stage { flex:1; min-height:160px; display:flex; align-items:center; justify-content:center; background:#fff; }
+  .stage svg { width:clamp(110px, 34vmin, 340px); height:auto; display:block; }
+  .panel { width:100%; max-width:560px; margin:0 auto; padding:14px 18px 20px; }
+  .modes { display:flex; gap:8px; margin-bottom:10px; }
+  button { font:inherit; flex:1; color:var(--ink); background:transparent; border:1px solid var(--line); padding:8px 12px; border-radius:6px; cursor:pointer; }
+  button:hover { background:#5c5c5c; }
+  button[aria-pressed=true] { background:#fff; color:#222; border-color:#fff; }
+  button:focus-visible, input:focus-visible { outline:3px solid #fff; outline-offset:2px; }
+  #info { margin:0 0 14px; font-size:.95rem; }
+  #info b { display:block; font-size:1.05rem; margin-bottom:2px; }
+  .ch { display:grid; grid-template-columns:96px 1fr 44px; gap:10px; align-items:center; margin-bottom:10px; }
+  .ch output { text-align:right; font-variant-numeric:tabular-nums; }
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:12px; border-radius:6px; background:var(--track); margin:0; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; border-radius:50%; background:#fff; border:2px solid #333; }
+  input[type=range]::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid #333; }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <svg viewBox="0 0 100 100" role="img" aria-label="Cara feliz negra">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#000" stroke-width="5"/>
+    <circle cx="35" cy="40" r="5.5" fill="#000"/>
+    <circle cx="65" cy="40" r="5.5" fill="#000"/>
+    <path d="M29 60 Q50 84 71 60" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<section class="panel">
+  <div class="modes">
+    <button id="bRGB" aria-pressed="true">RGB</button>
+    <button id="bCMYK" aria-pressed="false">CMYK</button>
+  </div>
+  <p id="info" aria-live="polite"></p>
+  <div id="sliders"></div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+const MODES = {
+  rgb: {
+    title: 'RGB: modelo aditivo (luz)',
+    text: 'Parte de la oscuridad y suma luz roja, verde y azul. Todo en 0 es negro; todo al máximo es blanco.',
+    ch: [['R · Rojo', 255, '#f00'], ['G · Verde', 255, '#0f0'], ['B · Azul', 255, '#00f']]
+  },
+  cmyk: {
+    title: 'CMYK: modelo sustractivo (tinta)',
+    text: 'Parte del papel blanco y resta luz con tinta cian, magenta, amarilla y negra. Todo en 0 es blanco; al sumar tinta se oscurece.',
+    ch: [['C · Cian', 100, '#00aeef'], ['M · Magenta', 100, '#ec008c'], ['Y · Amarillo', 100, '#fff200'], ['K · Negro', 100, '#000']]
+  }
+};
+let mode = 'rgb';
+let rgb = [255, 255, 255];   // 0–255
+let cmyk = [0, 0, 0, 0];     // 0–100
+
+// Simple screen conversions (not a printer profile).
+const cmykToRgb = ([c, m, y, k]) => [c, m, y].map(v => Math.round(255 * (1 - v / 100) * (1 - k / 100)));
+function rgbToCmyk([r, g, b]) {
+  const R = r / 255, G = g / 255, B = b / 255, k = 1 - Math.max(R, G, B);
+  if (k >= 1) return [0, 0, 0, 100];
+  return [R, G, B].map(v => Math.round((1 - v - k) / (1 - k) * 100)).concat(Math.round(k * 100));
+}
+
+function paint() {
+  const c = mode === 'rgb' ? rgb : cmykToRgb(cmyk);
+  $('stage').style.background = `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+function build() {
+  const m = MODES[mode], vals = mode === 'rgb' ? rgb : cmyk;
+  $('info').innerHTML = `<b>${m.title}</b>${m.text}`;
+  $('bRGB').setAttribute('aria-pressed', mode === 'rgb');
+  $('bCMYK').setAttribute('aria-pressed', mode === 'cmyk');
+  const box = $('sliders'); box.textContent = '';
+  m.ch.forEach(([name, max, col], i) => {
+    const row = document.createElement('div'); row.className = 'ch';
+    const lab = document.createElement('label'); lab.textContent = name; lab.htmlFor = 's' + i;
+    const s = document.createElement('input');
+    s.type = 'range'; s.id = 's' + i; s.min = 0; s.max = max; s.value = vals[i];
+    s.style.setProperty('--track', `linear-gradient(90deg, ${mode === 'rgb' ? '#000' : '#fff'}, ${col})`);
+    const o = document.createElement('output'); o.textContent = vals[i];
+    s.addEventListener('input', () => {
+      vals[i] = +s.value; o.textContent = s.value; paint();
+    });
+    row.append(lab, s, o); box.appendChild(row);
+  });
+  paint();
+}
+
+function setMode(next) {
+  if (next === mode) return;
+  if (next === 'cmyk') cmyk = rgbToCmyk(rgb); else rgb = cmykToRgb(cmyk);
+  mode = next; build();
+}
+$('bRGB').addEventListener('click', () => setMode('rgb'));
+$('bCMYK').addEventListener('click', () => setMode('cmyk'));
+build();
+</script>
+</body>
+</html>
