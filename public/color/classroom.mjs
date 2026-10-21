@@ -357,7 +357,7 @@ async function startCamera() {
   }
   stopCamera();
   try {
-    camera=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1920}},audio:false});
+    camera=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920}},audio:false});
     video.srcObject=camera; video.hidden=false; prompt.hidden=true; await video.play();
     renderPhotoControls(state?.stage);
     if (currentStage==='paint' && base) capturePhoto();
