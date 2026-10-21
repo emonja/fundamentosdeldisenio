@@ -55,12 +55,14 @@ if (view === 'projection') {
     const now = Date.now();
     for (const [pitch, note] of Object.entries(incoming)) {
       const old = notes[pitch];
-      if (!old || old.seq !== note.seq || old.active !== note.active) {
+      if (!old) {
         if (note.active) noteFades.set(pitch, {at:now, active:true});
-        else {
-          const fade = noteFades.get(pitch) || {at:now, active:false};
-          noteFades.set(pitch, {at:now, active:false, seq:note.seq, started:fade.started || fade.at || now});
-        }
+        else noteFades.delete(pitch);
+        continue;
+      }
+      if (old.seq !== note.seq || old.active !== note.active) {
+        if (note.active) noteFades.set(pitch, {at:now, active:true});
+        else if (old.active) noteFades.set(pitch, {at:now, active:false});
       }
     }
     notes = incoming;
@@ -223,31 +225,23 @@ function startBlobAnimation() {
     c.fillRect(0,0,rect.width,rect.height);
     const palette = [8,20,194,337,207,222,15,329,198,349,216,28];
     c.globalCompositeOperation = 'lighter';
-    const visibleNotes = [];
-    let totalFade = 0;
     for (const [pitch,note] of Object.entries(notes)) {
-      const fade = note.active ? 1 : Math.max(0,1-(now-(noteFades.get(pitch)?.at||now))/280);
+      const fadeState = noteFades.get(pitch);
+      const fade = note.active ? 1 : fadeState?.active === false ? Math.max(0,1-(now-fadeState.at)/180) : 0;
       if (fade <= 0) continue;
-      visibleNotes.push({pitch,note,fade});
-      totalFade += fade;
-    }
-    const energyScale = Math.min(1,.68/Math.max(totalFade,.001));
-    for (const {pitch,note,fade} of visibleNotes) {
-      c.globalAlpha = energyScale;
       const p = Number(note.pitch ?? pitch), hue = palette[p%12];
       const x = rect.width*(.15 + ((p-36+48)%48)/48*.7);
       const y = rect.height*(.35 + ((p*17)%29)/100);
       const v = Math.max(.3,Math.min(1,(note.velocity||70)/110));
-      const r = Math.min(rect.width,rect.height)*(.09+v*.09);
+      const r = Math.min(rect.width,rect.height)*(.08+v*.07);
       const pulse = 1 + Math.sin(now*.001 + p)*.035;
       const g = c.createRadialGradient(x,y,1,x,y,r*1.9*pulse);
-      g.addColorStop(0,'hsla('+hue+',100%,72%,'+(.65*fade)+')');
-      g.addColorStop(.32,'hsla('+hue+',100%,58%,'+(.42*fade)+')');
-      g.addColorStop(.72,'hsla('+hue+',100%,48%,'+(.1*fade)+')');
+      g.addColorStop(0,'hsla('+hue+',100%,72%,'+(.18*fade)+')');
+      g.addColorStop(.32,'hsla('+hue+',100%,58%,'+(.12*fade)+')');
+      g.addColorStop(.72,'hsla('+hue+',100%,48%,'+(.035*fade)+')');
       g.addColorStop(1,'hsla('+hue+',100%,45%,0)');
       c.fillStyle=g; c.beginPath(); c.arc(x,y,r*1.9*pulse,0,Math.PI*2); c.fill();
     }
-    c.globalAlpha = 1;
     c.globalCompositeOperation = 'source-over';
   };
   frame(performance.now());
