@@ -15,15 +15,12 @@ const stateNode = ref(db, statePath);
 let state = null;
 let online = false;
 let sessionId = null;
-let localState = null;
 let base = null;
-let baseCanvas = null;
 let paintLayer = null;
 let ctx = null;
 let brushColor = '#D72D47';
 let painting = false;
 let camera = null;
-let facing = 'environment';
 let currentStage = '';
 let notes = {};
 let noteFades = new Map();
@@ -414,7 +411,7 @@ function paintAt(a,b) {
   const c=paintLayer?.getContext('2d');if(!c)return;
   const distance=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.max(1,Math.ceil(distance/9));
   for(let i=0;i<=steps;i++){
-    const t=i/steps,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t,r=Math.max(18,base.width*.018);
+    const t=i/steps,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t,r=Math.max(30,base.width*.05);
     const g=c.createRadialGradient(x,y,r*.05,x,y,r);
     g.addColorStop(0,brushColor+'88');g.addColorStop(.55,brushColor+'55');g.addColorStop(1,brushColor+'00');
     c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();
