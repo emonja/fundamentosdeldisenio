@@ -52,15 +52,20 @@ onValue(stateNode, snap => {
 if (view === 'projection') {
   onValue(ref(db, 'color/broadcast/notes'), snap => {
     const incoming = snap.val() || {};
-    const now = Date.now();
+    // Match requestAnimationFrame's clock so note releases can expire.
+    const now = performance.now();
     for (const [pitch, note] of Object.entries(incoming)) {
       const old = notes[pitch];
-      if (!old || old.seq !== note.seq || old.active !== note.active) {
+      if (!old) {
         if (note.active) noteFades.set(pitch, {at:now, active:true});
-        else {
-          const fade = noteFades.get(pitch) || {at:now, active:false};
-          noteFades.set(pitch, {at:now, active:false, seq:note.seq, started:fade.started || fade.at || now});
-        }
+        else noteFades.delete(pitch);
+        continue;
+      }
+      const seqChanged = old.seq !== note.seq;
+      if (seqChanged || old.active !== note.active || old.velocity !== note.velocity) {
+        if (note.active) noteFades.set(pitch, {at:now, active:true});
+        else if (old.active) noteFades.set(pitch, {at:now, active:false});
+        else if (seqChanged && Number(note.velocity) > 0) noteFades.set(pitch, {at:now, active:false});
       }
     }
     notes = incoming;
@@ -224,13 +229,14 @@ function startBlobAnimation() {
     const palette = [8,20,194,337,207,222,15,329,198,349,216,28];
     c.globalCompositeOperation = 'lighter';
     for (const [pitch,note] of Object.entries(notes)) {
-      const fade = note.active ? 1 : Math.max(0,1-(now-(noteFades.get(pitch)?.at||now))/280);
+      const fadeState = noteFades.get(pitch);
+      const fade = note.active ? 1 : fadeState?.active === false ? Math.max(0,1-(now-fadeState.at)/180) : 0;
       if (fade <= 0) continue;
       const p = Number(note.pitch ?? pitch), hue = palette[p%12];
       const x = rect.width*(.15 + ((p-36+48)%48)/48*.7);
       const y = rect.height*(.35 + ((p*17)%29)/100);
       const v = Math.max(.3,Math.min(1,(note.velocity||70)/110));
-      const r = Math.min(rect.width,rect.height)*(.12+v*.12);
+      const r = Math.min(rect.width,rect.height)*(.08+v*.07);
       const pulse = 1 + Math.sin(now*.001 + p)*.035;
       const g = c.createRadialGradient(x,y,1,x,y,r*1.9*pulse);
       g.addColorStop(0,'hsla('+hue+',100%,72%,'+(.18*fade)+')');
