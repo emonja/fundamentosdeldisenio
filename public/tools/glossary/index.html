@@ -8,7 +8,7 @@
 </style>
 </head>
 <body><a class="skip" href="#results">Ir a las definiciones</a><div class="shell">
-<header><a class="brand" href="/" aria-label="Fundamentos del Diseño, inicio">FD.</a><span class="course">Fundamentos del Diseño</span></header>
+<header><a class="brand" href="/" aria-label="Fundamentos del Diseño, inicio">FD.</a><a class="course" href="../../#curso">← Volver al índice</a></header>
 <main><section class="intro"><p class="kicker">Glosario de consulta</p><h1>ABCD(i)ario</h1><p class="subtitle" id="subtitle">Repertorio de palabras y términos para expresar «Fantásticas Visiones».</p></section>
 <section class="tools" aria-label="Buscar en el glosario"><div class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" aria-label="Buscar un término" placeholder="Buscar un término…" autocomplete="off"><button class="clear" id="clear">Limpiar</button></div></section>
 <div class="layout"><nav aria-label="Filtrar por letra"><p>Índice</p><div class="letters" id="letters"></div></nav><section id="results" aria-label="Definiciones" tabindex="-1"><p class="count" id="count" role="status" aria-live="polite">Cargando glosario…</p><div id="entries"></div></section></div>
@@ -24,4 +24,5 @@ function render(){const q=normalize(query.value.trim());const found=data.entries
 query.addEventListener('input',()=>{active='';if(data)render()});document.querySelector('#clear').addEventListener('click',()=>{query.value='';active='';if(data)render();query.focus()});
 fetch('./abcdario.json').then(r=>{if(!r.ok)throw Error('load');return r.json()}).then(d=>{data=d;data.entries.sort((a,b)=>a.term.localeCompare(b.term,'es'));document.querySelector('#subtitle').textContent=data.subtitle;for(const letter of ['',...new Set(data.entries.map(e=>e.letter))]){const b=el('button',letter||'Todas');b.type='button';b.dataset.letter=letter;if(!letter)b.className='all';b.addEventListener('click',()=>{active=letter;query.value='';render()});letters.append(b)}document.querySelector('#sources').replaceChildren(...data.bibliography.map(s=>el('li',s)));render()}).catch(()=>{count.textContent='No se pudo cargar el glosario. Recarga la página para volver a intentarlo.'});
 </script></body></html>
+
 
