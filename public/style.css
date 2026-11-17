@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 @media(max-width:760px){.masthead b{display:none}.layer-nav{padding-right:0}.layer-link{padding-right:0}.layer-link>svg{width:29%}.layer-copy{min-width:0}.black-label{font-size:clamp(13px,3.9vw,18px)}.leader{width:15px}.nav-arrow{font-size:22px;padding-left:6px;flex-shrink:0}.guides{left:5%;width:18%}}
 @media(max-width:760px){.tool-row[data-dialog] .tool-type{display:block;grid-column:2;grid-row:2;font-size:9px}.tool-row[data-dialog] .row-arrow{grid-column:3;grid-row:1}}
+.workshop-projects .final-project:not(:last-child){margin-bottom:0}
+.workshop-projects .final-project+.final-project{border-top:0}
