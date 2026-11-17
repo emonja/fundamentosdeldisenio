@@ -1,0 +1,88 @@
+.brief { max-width: 880px; }
+.brief .masthead { justify-content: space-between; }
+.brief .return-link, .brief .pdf-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+}
+.brief .return-link:hover { text-decoration: underline; }
+.brief h1 { font-size: clamp(32px, 5vw, 56px); }
+.brief-intro, .brief-section {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.brief-intro { max-width: 68ch; margin: 20px 0; }
+.brief-facts {
+  margin: 24px 0;
+  padding: 12px 0;
+  border-block: 1px solid var(--line);
+  line-height: 1.5;
+}
+.brief-facts div {
+  display: grid;
+  grid-template-columns: 8.25rem 1fr;
+  gap: 4px 1rem;
+  padding: 4px 0;
+}
+.brief-facts dt { font-weight: 700; }
+.brief-facts dd { margin: 0; }
+.brief .pdf-link { gap: 12px; padding: 0 12px; border: 1px solid var(--ink); }
+.brief .pdf-link:hover { background: var(--ink); color: var(--white); }
+.brief-nav { margin: 26px 0 36px; }
+.brief-nav ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.brief-nav a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.brief-nav a:hover, .brief-section a { text-decoration: underline; text-underline-offset: 3px; }
+.brief-section { padding-bottom: 26px; }
+.brief-section h2 {
+  margin: 0 0 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink);
+  font-size: clamp(20px, 3vw, 27px);
+  line-height: 1.2;
+  letter-spacing: -.025em;
+}
+.brief-section h3 { margin: 22px 0 8px; font-size: 18px; line-height: 1.35; }
+.brief-section h4 { margin: 12px 0 4px; font-size: 16px; }
+.brief-section p { margin: 0 0 12px; }
+.brief-section ul, .brief-section ol { margin: 0 0 12px; padding-left: 1.5em; }
+.brief-section li + li { margin-top: 4px; }
+.monument + .monument { border-top: 1px solid var(--line); margin-top: 20px; }
+
+@media (max-width: 580px) {
+  .brief-facts div, .brief-nav ul { grid-template-columns: 1fr; }
+  .brief-facts div { padding: 6px 0; }
+}
+
+@page { size: letter; margin: .64in .72in; }
+@media print {
+  .brief .masthead, .brief .pdf-link, .brief-nav, .brief footer, body > .skip { display: none; }
+  .brief { max-width: none; padding: 0; }
+  .brief .opening { padding: 0 0 12pt; }
+  .brief h1 { width: auto; padding: 0; color: black; background: white; font-size: 26pt; }
+  .brief-intro, .brief-facts, .brief-section { font-size: 10.5pt; line-height: 1.42; }
+  .brief-intro { max-width: none; margin: 10pt 0; }
+  .brief-facts { margin: 10pt 0 0; padding: 5pt 0; }
+  .brief-facts div { grid-template-columns: 1.12in 1fr; padding: 1.5pt 0; }
+  .brief-section { padding-bottom: 10pt; }
+  .brief-section h2, .brief-section h3, .brief-section h4 { break-after: avoid; }
+  .brief-section h2 { font-size: 15pt; padding-top: 6pt; margin-bottom: 6pt; }
+  .brief-section h3 { font-size: 12pt; margin: 9pt 0 4pt; }
+  .brief-section h4 { font-size: 10.5pt; margin-top: 5pt; }
+  .brief-section p, .brief-section ul, .brief-section ol { margin-bottom: 5pt; }
+  .brief-section li { break-inside: avoid; }
+  .brief-section li + li { margin-top: 1pt; }
+  .monument + .monument { margin-top: 8pt; }
+}
