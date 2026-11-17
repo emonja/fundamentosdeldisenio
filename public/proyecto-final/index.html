@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Proyecto final · Fundamentos del Diseño</title>
+<meta name="description" content="Guía de taller para preparar la carpeta de producción y construir la maqueta del proyecto final.">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .project { max-width: 1240px; }
+  .project .masthead > span:nth-child(2) { margin-left: 0; }
+  .project .return-link {
+    margin-left: auto;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    text-align: right;
+    font-weight: 700;
+  }
+  .project .return-link:hover, .project footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .project .opening {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr);
+    align-items: center;
+    gap: clamp(28px, 6vw, 82px);
+    padding-bottom: 34px;
+  }
+  .project h1 { width: fit-content; }
+  .project .intro {
+    max-width: 48ch;
+    margin: 16px 0 20px;
+    line-height: 1.6;
+  }
+  .folder-link {
+    display: inline-flex;
+    gap: 14px;
+    align-items: center;
+    min-height: 44px;
+    padding: 7px 12px;
+    border: 1px solid var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .folder-link:hover { background: var(--ink); color: var(--white); }
+  .model {
+    width: min(100%, 310px);
+    justify-self: center;
+    margin: 0;
+  }
+  .model svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font: 11px monospace;
+  }
+  .model figcaption { text-align: center; }
+  .project .section-head h2 { font-size: clamp(21px, 3vw, 27px); }
+  .weeks {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0 0 32px;
+    list-style: none;
+  }
+  .weeks li {
+    border-left: 1px solid var(--line);
+    padding: 6px clamp(12px, 2.6vw, 32px);
+  }
+  .weeks li:first-child { border-left: 0; padding-left: 0; }
+  .weeks h3 { margin: 5px 0; font-size: 18px; }
+  .weeks p, .folder p, .review p { margin: 0; line-height: 1.55; }
+  .weeks p { color: var(--muted); font-size: 14px; }
+  .folder {
+    margin: 0 0 36px;
+    padding: 0;
+    list-style: none;
+  }
+  .folder li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 12px 28px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+  }
+  .folder h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(17px, 2.3vw, 22px);
+    letter-spacing: -.02em;
+  }
+  .folder p, .review p { max-width: 68ch; }
+  .review {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: start;
+    gap: 12px 28px;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 26px;
+    padding: 20px 0;
+  }
+  .review h2 { margin: 0; font-size: 21px; }
+  @media (max-width: 680px) {
+    .project .opening, .folder li, .review { grid-template-columns: minmax(0, 1fr); }
+    .project .opening { gap: 24px; }
+    .model { width: min(100%, 220px); }
+    .weeks { grid-template-columns: minmax(0, 1fr); }
+    .weeks li, .weeks li:first-child { border: 0; border-top: 1px solid var(--line); padding: 12px 0; }
+    .folder li { gap: 5px; }
+  }
+  @media print {
+    .project .masthead, .folder-link, .project footer { display: none; }
+    .folder li, .review { break-inside: avoid; }
+    .project h1 { background: white; color: black; padding-left: 0; }
+  }
+</style>
+</head>
+<body id="inicio">
+<a class="skip" href="#contenido">Ir al contenido</a>
+<div class="shell project">
+  <header class="masthead">
+    <a class="brand" href="../" aria-label="Inicio de Fundamentos del Diseño">FD.</a>
+    <span>FUNDAMENTOS DEL DISEÑO</span>
+    <a class="return-link" href="../#taller">← Volver al taller</a>
+  </header>
+
+  <main id="contenido">
+    <div class="opening">
+      <div>
+        <h1>Proyecto final</h1>
+        <p class="tagline">Del ejercicio a la maqueta.</p>
+        <p class="intro">En equipos de tres, elijan una idea que haya surgido de un ejercicio individual y desarróllenla en una maqueta de 50 × 50 cm. Esta semana, completen la carpeta de producción antes de empezar la construcción.</p>
+        <a class="folder-link" href="#carpeta">Ver la carpeta de producción <span aria-hidden="true">↓</span></a>
+      </div>
+      <figure class="model">
+        <svg viewBox="0 0 240 226" aria-hidden="true" fill="none">
+          <path d="M38 33h160v160H38z" stroke="currentColor"/>
+          <path d="M118 25v176M30 113h176" stroke="currentColor" stroke-opacity=".36" stroke-dasharray="3 4"/>
+          <path d="M38 26V10m160 16V10M38 15h160M31 33H15m16 160H15M20 33v160M34 19l8-8m152 8 8-8M16 37l8-8m-8 168 8-8" stroke="currentColor" stroke-width=".75"/>
+          <path d="M97 9h42v12H97zM0 90h29v46H0z" fill="white"/>
+          <text x="118" y="19" fill="currentColor" text-anchor="middle">50 cm</text>
+          <text x="15" y="113" fill="currentColor" text-anchor="middle" transform="rotate(-90 15 113)">50 cm</text>
+        </svg>
+        <figcaption class="small-note">FORMATO DE LA MAQUETA</figcaption>
+      </figure>
+    </div>
+
+    <section aria-labelledby="semanas">
+      <div class="section-head"><h2 id="semanas">Tres semanas de producción</h2></div>
+      <ol class="weeks">
+        <li><span class="small-note">SEMANA 1</span><h3>Preparar</h3><p>Completen la carpeta y revisen en taller cómo se va a construir la pieza.</p></li>
+        <li><span class="small-note">SEMANA 2</span><h3>Construir</h3><p>Prueben los detalles críticos y avancen con la fabricación y el armado.</p></li>
+        <li><span class="small-note">SEMANA 3</span><h3>Afianzar el acabado</h3><p>Ajusten los encuentros, revisen el conjunto y preparen la presentación de la maqueta.</p></li>
+      </ol>
+    </section>
+
+    <section id="carpeta" aria-labelledby="carpeta-titulo">
+      <div class="section-head"><h2 id="carpeta-titulo">Carpeta de producción</h2></div>
+      <ul class="folder">
+        <li><h3>Prehistoria</h3><p>Muestren el ejercicio de origen y den crédito a quien lo hizo. Señalen qué encontraron ahí, qué conservan y qué transformaron en equipo.</p></li>
+        <li><h3>Concepto</h3><p>Expliquen la idea que guía el proyecto y qué quieren que se perciba al mirar o recorrer la pieza.</p></li>
+        <li><h3>Investigación</h3><p>Reúnan los referentes, materiales o técnicas que orientan la propuesta. Vinculen cada hallazgo con una decisión.</p></li>
+        <li><h3>Propuesta y bocetos</h3><p>Muestren las variantes exploradas y una vista de conjunto de la propuesta elegida. Expliquen por qué la eligieron.</p></li>
+        <li><h3>Proyecciones y detalles</h3><p>Dibujen la planta y los alzados con cotas. Incluyan cortes o detalles donde ayuden a entender una unión, un soporte o un encuentro.</p></li>
+        <li><h3>Propuesta de materiales</h3><p>Definan qué material va en cada parte, con sus espesores y cantidades. Identifiquen qué tienen y qué les falta conseguir.</p></li>
+        <li><h3>Presupuesto</h3><p>Estimen costos unitarios, subtotales y total. Incluyan insumos y servicios de fabricación cuando hagan falta.</p></li>
+        <li><h3>Plan de fabricación y acabado</h3><p>Ordenen las operaciones y anoten qué herramientas y tiempos requieren. Identifiquen el detalle más delicado y cómo van a probarlo.</p></li>
+        <li><h3>Equipo y acuerdos</h3><p>Definan quién da seguimiento a cada frente, por ejemplo dibujos, materiales y costos, o fabricación. Los tres toman decisiones, participan en la construcción y revisan el acabado.</p></li>
+        <li><h3>Bitácora de proceso</h3><p>Fechen y documenten lo que ocurra esta semana con fotos, bocetos o notas de pruebas. Registren qué cambió y por qué. Recuperen entradas individuales anteriores cuando ayuden a explicar una decisión.</p></li>
+      </ul>
+    </section>
+
+    <section class="review" aria-labelledby="revision">
+      <h2 id="revision">Para conversar en taller</h2>
+      <p>¿Qué harían primero al comenzar la construcción? ¿Qué detalle necesitan probar? ¿Qué debe quedar resuelto antes de empezar?</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand" href="../" aria-label="Inicio de Fundamentos del Diseño">FD.</a>
+    <span>FUNDAMENTOS DEL DISEÑO <span class="footer-divider">/</span> TEC DE MONTERREY</span>
+    <a href="#inicio">VOLVER ARRIBA ↑</a>
+  </footer>
+</div>
+</body>
+</html>
